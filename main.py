@@ -57,6 +57,25 @@ def create_square(size) -> Square:
 		"speed_y": speed_y,
 		"color": color,
 	}
+def check_collision(a: Square, b: Square) -> bool:
+	"""Return True if squares a and b overlap."""
+	rect_a = pygame.Rect(a["x"], a["y"], a["size"], a["size"])
+	rect_b = pygame.Rect(b["x"], b["y"], b["size"], b["size"])
+	return rect_a.colliderect(rect_b)
+
+def respawn_square(square: Square) -> None:                                                                                                                               
+    """Reset position/color/velocity in place — size is preserved."""
+    size = square["size"]                                                                                                                                                 
+    square["x"] = random.randint(0, WIDTH - size)
+    square["y"] = random.randint(0, HEIGHT - size)                                                                                                                        
+    square["color"] = (                                                                                                                                                   
+        random.randint(0, 255),
+        random.randint(0, 255),                                                                                                                                           
+        random.randint(0, 255),
+    )
+    speed = max(1, 6 - (size // 10))
+    square["speed_x"] = random_direction(speed)                                                                                                                           
+    square["speed_y"] = random_direction(speed)
 
 
 def get_square_center(square: Square) -> tuple[float, float]:
@@ -97,6 +116,8 @@ def calculate_flee_offset(square: Square, squares: list[Square]) -> tuple[float,
 	return away_x * FLEE_STRENGTH, away_y * FLEE_STRENGTH
 
 
+     
+     
 def main() -> None:
 	pygame.init()
 	screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -104,7 +125,6 @@ def main() -> None:
 	clock = pygame.time.Clock()
 
 	squares = [create_square(size) for size, count in SQUARE_MIX for _ in range(count)]
-
 	running = True
 	while running:
 		dt = clock.tick(FPS) / 1000.0
@@ -131,6 +151,7 @@ def main() -> None:
 				square["color"],
 				(int(square["x"]), int(square["y"]), size, size),
 			)
+		
 
 		pygame.display.flip()
 
@@ -139,3 +160,6 @@ def main() -> None:
 
 if __name__ == "__main__":
 	main()
+ 
+ 
+
