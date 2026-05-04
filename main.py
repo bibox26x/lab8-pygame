@@ -119,14 +119,9 @@ def main() -> None:
 			flee_x, flee_y = calculate_flee_offset(square, squares)
 			square["x"] += (square["speed_x"] + flee_x) * frame_scale
 			square["y"] += (square["speed_y"] + flee_y) * frame_scale
-
-			if square["x"] <= 0 or square["x"] >= WIDTH - size:
-				square["speed_x"] *= -1
-				square["x"] = max(0, min(square["x"], WIDTH - size))
-
-			if square["y"] <= 0 or square["y"] >= HEIGHT - size:
-				square["speed_y"] *= -1
-				square["y"] = max(0, min(square["y"], HEIGHT - size))
+            
+			square["x"] = (square["x"] + size) % (WIDTH + size) - size                                                                                                                
+			square["y"] = (square["y"] + size) % (HEIGHT + size) - size 
 
 		screen.fill((20, 20, 20))
 		for square in squares:
