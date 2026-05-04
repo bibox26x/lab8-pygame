@@ -129,6 +129,12 @@ def main() -> None:
 	while running:
 		dt = clock.tick(FPS) / 1000.0
 		frame_scale = dt * FPS
+		
+		for i, square in enumerate(squares):
+			for other in squares[i + 1 :]:
+				if check_collision(square, other):
+					respawn_square(square)
+					respawn_square(other)
 
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
