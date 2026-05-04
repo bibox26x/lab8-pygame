@@ -8,9 +8,11 @@ WIDTH = 800
 HEIGHT = 600
 FPS = 60
 
-SQUARE_COUNT = 100
-MIN_SQUARE_SIZE = 10
-MAX_SQUARE_SIZE = 50
+SQUARE_MIX = [                                                                                                                                                            
+    (25, 5),
+    (10, 10),
+    (4, 30),
+] 
 FLEE_DISTANCE = 120
 FLEE_STRENGTH = 1.5
 
@@ -32,9 +34,8 @@ def random_direction(speed: int) -> int:
 	return random.choice([-speed, speed])
 
 
-def create_square() -> Square:
+def create_square(size) -> Square:
 	"""Create one square with random position, color, and movement."""
-	size = random.randint(MIN_SQUARE_SIZE, MAX_SQUARE_SIZE)
 	x = random.randint(0, WIDTH - size)
 	y = random.randint(0, HEIGHT - size)
 
@@ -102,7 +103,7 @@ def main() -> None:
 	pygame.display.set_caption("Bouncing Squares")
 	clock = pygame.time.Clock()
 
-	squares = [create_square() for _ in range(SQUARE_COUNT)]
+	squares = [create_square(size) for size, count in SQUARE_MIX for _ in range(count)]
 
 	running = True
 	while running:
